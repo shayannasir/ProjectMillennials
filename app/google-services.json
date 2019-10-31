@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "673588373054",
+    "firebase_url": "https://projectmillennial-fdf44.firebaseio.com",
+    "project_id": "projectmillennial-fdf44",
+    "storage_bucket": "projectmillennial-fdf44.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673588373054:android:20471c071d2c41a080136f",
+        "android_client_info": {
+          "package_name": "com.shayannasir.projectm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "673588373054-9lhrd502r1muv0eudt6v92gicnis4ku5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shayannasir.projectm",
+            "certificate_hash": "a9c1e7a266dfdc0fac534fadddcd9af56e6563f3"
+          }
+        },
+        {
+          "client_id": "673588373054-4d79499prifvfp0o1vc1icr2cn72tnku.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4Zko9N_eu3hGNvAgpc7ObadT3WBCC1BY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "673588373054-4d79499prifvfp0o1vc1icr2cn72tnku.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
