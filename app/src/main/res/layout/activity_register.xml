@@ -93,6 +93,7 @@
                 android:layout_marginRight="19dp"
                 android:padding="22dp"
                 android:background="@drawable/solid_button"
+                android:drawableEnd="@drawable/right_arrow"
                 android:text="Register"
                 android:textAlignment="textStart"
                 android:textAllCaps="true"
