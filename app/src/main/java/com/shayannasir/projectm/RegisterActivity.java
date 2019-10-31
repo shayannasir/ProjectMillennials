@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -25,6 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView AlreadyHaveAccountLink;
 
     private FirebaseAuth mAuth;
+    private DatabaseReference RootRef;
 
     private ProgressDialog loadingBar;
 
@@ -37,6 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         mAuth = FirebaseAuth.getInstance();
+        RootRef = FirebaseDatabase.getInstance().getReference();
 
 
         InitializeFields();
@@ -75,7 +79,10 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
-                                SendUserToLoginActivity();
+                                String currentUserID = mAuth.getCurrentUser().getUid();
+                                RootRef.child("Users").child(currentUserID).setValue("");
+
+                                SendUserToMainActivity();
                                 Toast.makeText(RegisterActivity.this, "Account created successfully", Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
                             }
@@ -88,12 +95,21 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+
+
     private void InitializeFields() {
         CreateAccountButton = (Button) findViewById(R.id.register_button);
         UserEmail = (EditText) findViewById(R.id.register_email);
         UserPassword = (EditText) findViewById(R.id.register_password);
         AlreadyHaveAccountLink = (TextView) findViewById(R.id.already_have_an_account_link);
         loadingBar = new ProgressDialog(this);
+    }
+
+    private void SendUserToMainActivity() {
+        Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(mainIntent);
+        finish();
     }
 
     private void SendUserToLoginActivity() {
