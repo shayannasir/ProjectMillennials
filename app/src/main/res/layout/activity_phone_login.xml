@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PhoneLoginActivity"
+    android:background="@color/colorPrimaryDark">
+
+    <ImageButton
+        android:id="@+id/phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/smartphone"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/phone_number_input"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:inputType="phone"
+        android:padding="22dp"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/phone"
+        android:background="@drawable/inputs_dark"
+        android:hint="Enter Phone Number with country code"
+        android:textSize="14sp"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textColorHint="@color/grey"
+        android:textColor="@color/greyLighten"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/verification_code_input"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:padding="22dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/inputs_dark"
+        android:layout_below="@id/phone_number_input"
+        android:hint="Enter Verification Code"
+        android:textSize="14sp"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textColorHint="@color/grey"
+        android:textColor="@color/greyLighten"
+        android:visibility="invisible"/>
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/send_verification_code_button"
+        android:text="Send Verification Code"
+        android:textAllCaps="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:padding="22dp"
+        android:background="@drawable/holo_button"
+        android:layout_alignParentLeft="true"
+        android:textColor="@color/grey"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:textAlignment="center"
+        android:layout_below="@+id/verification_code_input"/>
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/verify_button"
+        android:text="Verify"
+        android:textAllCaps="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:padding="22dp"
+        android:background="@drawable/solid_button"
+        android:layout_alignParentRight="true"
+        android:drawableEnd="@drawable/right_arrow"
+        android:textColor="@color/greyDarken"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:textAlignment="center"
+        android:layout_below="@+id/verification_code_input"
+        android:visibility="invisible"/>
+
+</RelativeLayout>
