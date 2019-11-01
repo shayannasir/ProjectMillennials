@@ -152,6 +152,7 @@ public class PhoneLoginActivity extends AppCompatActivity {
 
     private void SendUserToMainActivity() {
         Intent mainIntent = new Intent(PhoneLoginActivity.this, MainActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);//Added on my own
         startActivity(mainIntent);
         finish();
     }
