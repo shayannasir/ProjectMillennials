@@ -6,4 +6,6 @@
     <color name="grey">#BDBDBD</color>
     <color name="greyLighten">#F5F5F5</color>
     <color name="greyDarken">#212121</color>
+    <color name="green">#00FF00</color>
+    <color name="red">#ff073a</color>
 </resources>

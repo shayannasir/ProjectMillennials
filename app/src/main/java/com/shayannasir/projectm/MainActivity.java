@@ -112,9 +112,12 @@ public class MainActivity extends AppCompatActivity {
             RequestNewGroup();
         if(item.getItemId() == R.id.main_find_friends_option)
             SendUserToFindFriendsActivity();
+        if(item.getItemId() == R.id.main_chat_requests)
+            SendUserToChatRequestsActivity();
 
         return true;
     }
+
 
     private void RequestNewGroup() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this,R.style.AlertDialog);
@@ -177,5 +180,11 @@ public class MainActivity extends AppCompatActivity {
     private void SendUserToFindFriendsActivity() {
         Intent findFriendsIntent = new Intent(MainActivity.this, FindFriendsActivity.class);
         startActivity(findFriendsIntent);
+    }
+
+
+    private void SendUserToChatRequestsActivity() {
+        Intent chatRequestsIntent = new Intent(MainActivity.this, RequestsActivity.class);
+        startActivity(chatRequestsIntent);
     }
 }
