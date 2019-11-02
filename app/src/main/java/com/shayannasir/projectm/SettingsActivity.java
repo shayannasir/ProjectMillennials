@@ -2,6 +2,7 @@ package com.shayannasir.projectm;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,6 +32,8 @@ public class SettingsActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference RootRef;
 
+    private Toolbar settingsToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,11 @@ public class SettingsActivity extends AppCompatActivity {
         UpdateAccountSettings = (Button)findViewById(R.id.update_settings_button);
         userName = (EditText) findViewById(R.id.set_user_name);
         userStatus = (EditText) findViewById(R.id.set_profile_status);
+        settingsToolbar = (Toolbar)findViewById(R.id.settings_toolbar);
+        setSupportActionBar(settingsToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setTitle("Account Settings");
     }
 
 
@@ -68,11 +76,11 @@ public class SettingsActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(setUserStatus))
             Toast.makeText(this, "Please enter a short description/status", Toast.LENGTH_SHORT).show();
         else{
-            HashMap<String, String> profileMap = new HashMap<>();
+            HashMap<String, Object> profileMap = new HashMap<>();
             profileMap.put("uid", currentUserID);
             profileMap.put("name", setUserName);
             profileMap.put("status", setUserStatus);
-            RootRef.child("Users").child(currentUserID).setValue(profileMap).
+            RootRef.child("Users").child(currentUserID).updateChildren(profileMap).
                     addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
