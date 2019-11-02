@@ -49,7 +49,8 @@
                 android:text="user status"
                 android:textAlignment="textStart"
                 android:textSize="15sp"
-                android:textColor="@color/greyLighten"/>
+                android:textStyle="italic"
+                android:textColor="@color/grey"/>
 
         </LinearLayout>
 
