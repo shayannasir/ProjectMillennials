@@ -129,13 +129,15 @@ public class ProfileActivity extends AppCompatActivity {
                     if(current_state.equals("request_received")){
                         AcceptChatRequest();
                     }
+                    if(current_state.equals("friends")){
+                        RemoveSpecificContact();
+                    }
                 }
             });
         }else{
             SendMessageRequestButton.setVisibility(View.INVISIBLE);
         }
     }
-
 
     private void SendChatRequest() {
         ChatReqRef.child(senderUserID).child(receiverUserID).child("request_type").setValue("sent")
@@ -223,6 +225,33 @@ public class ProfileActivity extends AppCompatActivity {
                                             }
                                         }
                                     });
+                        }
+                    }
+                });
+    }
+
+
+    private void RemoveSpecificContact() {
+        ContactsRef.child(senderUserID).child(receiverUserID).removeValue()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            ContactsRef.child(receiverUserID).child(senderUserID).removeValue()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                SendMessageRequestButton.setEnabled(true);
+                                                current_state = "new";
+                                                SendMessageRequestButton.setText("Send Message");
+
+                                                DeclineRequestButton.setVisibility(View.INVISIBLE);
+                                                DeclineRequestButton.setEnabled(false);
+                                            }
+                                        }
+                                    });
+
                         }
                     }
                 });
