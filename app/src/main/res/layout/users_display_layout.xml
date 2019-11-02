@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimaryDark">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +28,8 @@
                     android:text="username"
                     android:textAlignment="textStart"
                     android:textSize="15sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:textColor="@color/greyLighten"/>
 
                 <ImageView
                     android:id="@+id/user_online_status"
@@ -45,7 +47,8 @@
                 android:layout_height="wrap_content"
                 android:text="user status"
                 android:textAlignment="textStart"
-                android:textSize="15sp"/>
+                android:textSize="15sp"
+                android:textColor="@color/greyLighten"/>
 
         </LinearLayout>
 
