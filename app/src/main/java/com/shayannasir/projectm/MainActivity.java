@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout myTabLayout;
     private TabsAccessorAdapter myTabsAccessorAdapter;
 
-    private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
     private DatabaseReference RootRef;
     private String currentUserID;
@@ -52,13 +51,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
 
-        if (currentUser == null){
-            SendUserToLoginActivity();
-        }
+//        if (currentUser == null){
+//            SendUserToLoginActivity();
+//        }
 
-        currentUserID = mAuth.getCurrentUser().getUid();
 
         RootRef = FirebaseDatabase.getInstance().getReference();
 
@@ -79,11 +76,13 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onStart();
 
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
         if (currentUser == null){
             SendUserToLoginActivity();
         }
         else{
-            updateUserStatus("online");
+            updateUserStatus("Online");
 
             verifyUserExistence();
         }
@@ -110,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null){
-            updateUserStatus("offline");
+            updateUserStatus("Offline");
         }
     }
 
@@ -144,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         super.onOptionsItemSelected(item);
         if(item.getItemId() == R.id.main_logout_option){
-            updateUserStatus("offline");
+            updateUserStatus("Offline");
             mAuth.signOut();
             SendUserToLoginActivity();
         }
@@ -229,6 +228,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateUserStatus(String state){
+
+        currentUserID = mAuth.getCurrentUser().getUid();
+
         String saveCurrentTime, saveCurrentDate;
 
         Calendar calendar = Calendar.getInstance();

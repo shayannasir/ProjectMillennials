@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -68,6 +69,29 @@ public class ContactsFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                         if(dataSnapshot.exists()){ //from datasnapshot.haschild(image)
+
+
+                            if(dataSnapshot.child("userState").hasChild("state")){
+
+                                String state = dataSnapshot.child("userState").child("state").getValue().toString();
+                                String date = dataSnapshot.child("userState").child("date").getValue().toString();
+                                String time = dataSnapshot.child("userState").child("time").getValue().toString();
+
+                                if(state.equals("Online")){
+                                    contactsViewHolder.onlineIcon.setVisibility(View.VISIBLE);
+                                }
+                                else if(state.equals("Away")){
+                                    contactsViewHolder.onlineIcon.setVisibility(View.INVISIBLE);                                }
+                                else{
+                                    contactsViewHolder.onlineIcon.setVisibility(View.INVISIBLE);
+                                }
+
+                            } else {
+                                contactsViewHolder.onlineIcon.setVisibility(View.INVISIBLE);
+
+                            }
+
+
                             String profileName = dataSnapshot.child("name").getValue().toString();
                             String profileStatus = dataSnapshot.child("status").getValue().toString();
 
@@ -101,12 +125,14 @@ public class ContactsFragment extends Fragment {
     public static class ContactsViewHolder extends RecyclerView.ViewHolder{
 
         TextView userName, userStatus;
+        ImageView onlineIcon;
 
         public ContactsViewHolder(@NonNull View itemView) {
             super(itemView);
 
             userName = itemView.findViewById(R.id.user_profile_name);
             userStatus = itemView.findViewById(R.id.user_status);
+            onlineIcon = itemView.findViewById(R.id.user_online_status);
 
         }
     }
