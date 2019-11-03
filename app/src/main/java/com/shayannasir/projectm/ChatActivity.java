@@ -30,7 +30,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +46,7 @@ public class ChatActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference RootRef;
 
-    private ImageButton SendMessageButton;
+    private ImageButton SendMessageButton, SendFileButton;
     private EditText MessageInputText;
 
     private Toolbar ChatToolbar;
@@ -53,6 +55,9 @@ public class ChatActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private MessageAdapter messageAdapter;
     private RecyclerView userMessagesList;
+
+    private String saveCurrentTime, saveCurrentDate;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +140,10 @@ public class ChatActivity extends AppCompatActivity {
             messageTextBody.put("message", messageText);
             messageTextBody.put("type", "text");
             messageTextBody.put("from", messageSenderID);
+            messageTextBody.put("to", messageReceiverID);
+            messageTextBody.put("messageID", messagePushID);
+            messageTextBody.put("time", saveCurrentTime);
+            messageTextBody.put("date", saveCurrentDate);
 
             Map messageBodyDetails = new HashMap();
             messageBodyDetails.put(messageSenderRef + "/" + messagePushID, messageTextBody);
@@ -215,6 +224,7 @@ public class ChatActivity extends AppCompatActivity {
         userLastSeen = (TextView)findViewById(R.id.custom_user_last_seen);
 
         SendMessageButton = (ImageButton)findViewById(R.id.send_message_btn);
+        SendFileButton = (ImageButton)findViewById(R.id.send_files_btn);
         MessageInputText = (EditText)findViewById(R.id.input_message);
 
         messageAdapter = new MessageAdapter(messagesList);
@@ -222,6 +232,14 @@ public class ChatActivity extends AppCompatActivity {
         linearLayoutManager = new LinearLayoutManager(this);
         userMessagesList.setLayoutManager(linearLayoutManager);
         userMessagesList.setAdapter(messageAdapter);
+
+        Calendar calendar = Calendar.getInstance();
+
+        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
+        saveCurrentDate = currentDate.format(calendar.getTime());
+
+        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+        saveCurrentTime = currentTime.format(calendar.getTime());
 
 
     }
