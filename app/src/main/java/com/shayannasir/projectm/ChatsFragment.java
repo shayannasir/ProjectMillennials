@@ -1,6 +1,7 @@
 package com.shayannasir.projectm;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -61,16 +62,30 @@ public class ChatsFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull final ChatsViewHolder chatsViewHolder, int i, @NonNull Contacts contacts) {
 
-                final  String usersIDs = getRef(i).getKey();
+                final String usersIDs = getRef(i).getKey();
                 UsersRef.child(usersIDs).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        final String retName = dataSnapshot.child("name").getValue().toString();
-                        final String retStatus = dataSnapshot.child("status").getValue().toString();
+                        if(dataSnapshot.exists()){
 
-                        chatsViewHolder.userName.setText(retName);
-                        chatsViewHolder.userStatus.setText("Last Seen: Date Time");
+                            final String retName = dataSnapshot.child("name").getValue().toString();
+                            final String retStatus = dataSnapshot.child("status").getValue().toString();
+
+                            chatsViewHolder.userName.setText(retName);
+                            chatsViewHolder.userStatus.setText("Last Seen: Date Time");
+
+                            chatsViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                    Intent chatIntent = new Intent(getContext(), ChatActivity.class);
+                                    chatIntent.putExtra("visit_user_id", usersIDs);
+                                    chatIntent.putExtra("visit_user_name", retName);
+                                    startActivity(chatIntent);
+                                }
+                            });
+                        }
 
                     }
 
