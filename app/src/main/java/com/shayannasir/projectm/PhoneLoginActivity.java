@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
@@ -23,6 +24,10 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.concurrent.TimeUnit;
 
@@ -32,6 +37,7 @@ public class PhoneLoginActivity extends AppCompatActivity {
     private EditText InputPhoneNumber, InputVerificationCode;
 
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    private DatabaseReference UsersRef;
     private FirebaseAuth mAuth;
 
     private ProgressDialog loadingBar;
@@ -45,6 +51,7 @@ public class PhoneLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_phone_login);
 
         mAuth = FirebaseAuth.getInstance();
+        UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
         InitializeFields();
 
@@ -138,9 +145,30 @@ public class PhoneLoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            loadingBar.dismiss();
-                            Toast.makeText(PhoneLoginActivity.this, "Phone verification successful", Toast.LENGTH_SHORT).show();
-                            SendUserToMainActivity();
+
+
+
+                            final String currentUserID = mAuth.getCurrentUser().getUid();
+                            FirebaseInstanceId.getInstance().getInstanceId()
+                                    .addOnSuccessListener( PhoneLoginActivity.this,  new OnSuccessListener<InstanceIdResult>() {
+                                        @Override
+                                        public void onSuccess(InstanceIdResult instanceIdResult) {
+                                            String deviceToken = instanceIdResult.getToken();
+                                            UsersRef.child(currentUserID).child("device_token").setValue(deviceToken)
+                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if(task.isSuccessful()){
+                                                                loadingBar.dismiss();
+                                                                Toast.makeText(PhoneLoginActivity.this, "Phone verification successful", Toast.LENGTH_SHORT).show();
+                                                                SendUserToMainActivity();
+                                                            }
+                                                        }
+                                                    });
+                                        }
+                                    });
+
+                            
                         } else {
                             String message = task.getException().toString();
                             Toast.makeText(PhoneLoginActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
