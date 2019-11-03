@@ -33,7 +33,7 @@ exports.sendNotification = functions.database.ref('/Notifications/{receiver_user
 			notification:
 			{
 				title: "New Chat Request",
-				body: `You have a new Chat Request, please Check`,
+				body: `Someone wants to talk to you. Go find out!`,
 				icon: "default"
 			}
 		};

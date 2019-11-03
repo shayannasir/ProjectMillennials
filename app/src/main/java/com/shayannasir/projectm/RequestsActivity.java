@@ -179,6 +179,81 @@ public class RequestsActivity extends AppCompatActivity {
 
                                     }
                                 });
+                            } else if(type.equals("sent")){
+
+                                Button request_sent_btn = requestsViewHolder.itemView.findViewById(R.id.request_accept_button);
+                                request_sent_btn.setText("Request Sent");
+
+                                requestsViewHolder.itemView.findViewById(R.id.request_reject_button).setVisibility(View.INVISIBLE);
+
+
+
+                                UsersRef.child(list_user_id).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                        final String requestUserName = dataSnapshot.child("name").getValue().toString();
+                                        final String requestUserStatus = dataSnapshot.child("status").getValue().toString();
+
+                                        requestsViewHolder.userName.setText(requestUserName);
+                                        requestsViewHolder.userStatus.setText("Already sent Chat Request");
+
+                                        requestsViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                CharSequence options[] = new CharSequence[]
+                                                        {
+                                                                "Cancel Chat Request"
+                                                        };
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(RequestsActivity.this);
+                                                builder.setTitle("Already sent Chat Request to " + requestUserName);
+
+                                                builder.setItems(options, new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+
+                                                        if(which == 0){
+
+                                                            ChatReqRef.child(currentUserID).child(list_user_id)
+                                                                    .removeValue()
+                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                            if(task.isSuccessful()){
+
+                                                                                ChatReqRef.child(list_user_id).child(currentUserID)
+                                                                                        .removeValue()
+                                                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                            @Override
+                                                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                                                if(task.isSuccessful()){
+
+                                                                                                    Toast.makeText(RequestsActivity.this, "You have cancelled the Chat Request", Toast.LENGTH_SHORT).show();
+                                                                                                }
+                                                                                            }
+                                                                                        });
+                                                                            }
+                                                                        }
+                                                                    });
+                                                        }
+                                                    }
+                                                });
+
+                                                builder.show();
+
+                                            }
+                                        });
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+
+
+
                             }
                         }
                     }
