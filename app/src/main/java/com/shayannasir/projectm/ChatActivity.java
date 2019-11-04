@@ -193,12 +193,16 @@ public class ChatActivity extends AppCompatActivity {
 
     private void SendMessage(){
 
-        String messageText = MessageInputText.getText().toString();
+        String messageText = MessageInputText.getText().toString().trim();
 
         if(TextUtils.isEmpty(messageText)){
 
             Toast.makeText(this, "Please write some message", Toast.LENGTH_SHORT).show();
         } else {
+
+//            Moved this from line 235 to here, to make the input field empty quicker.
+            MessageInputText.setText("");
+
 
             String messageSenderRef = "Messages/" + messageSenderID + "/" + messageReceiverID;
             String messageReceiverRef = "Messages/" + messageReceiverID + "/" + messageSenderID;
@@ -229,7 +233,6 @@ public class ChatActivity extends AppCompatActivity {
                         Toast.makeText(ChatActivity.this, "Error", Toast.LENGTH_SHORT).show();
                     }
 
-                    MessageInputText.setText("");
                 }
             });
 
