@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -38,6 +39,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -116,9 +118,19 @@ public class ChatActivity extends AppCompatActivity {
                         }
                         if(which == 1){
                             checker = "pdf";
+
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                            intent.setType("application/pdf");
+                            startActivityForResult(intent.createChooser(intent, "Select PDF file"), 438);
                         }
                         if(which ==2){
-                            checker = "docs";
+                            checker = "docx";
+
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                            intent.setType("application/msword");
+                            startActivityForResult(intent.createChooser(intent, "Select Word file"), 438);
                         }
                     }
                 });
@@ -231,6 +243,65 @@ public class ChatActivity extends AppCompatActivity {
 
 
             if(!checker.equals("image")){
+
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("DocumentFiles");
+
+                final String messageSenderRef = "Messages/" + messageSenderID + "/" + messageReceiverID;
+                final String messageReceiverRef = "Messages/" + messageReceiverID + "/" + messageSenderID;
+
+                DatabaseReference userMessageKeyRef = RootRef.child("Messages").child(messageSenderID)
+                        .child(messageReceiverID).push();
+
+                final String messagePushID = userMessageKeyRef.getKey();
+
+                final StorageReference filePath = storageReference.child(messagePushID + "." + checker);
+
+                UploadTask uploadTask = filePath.putFile(fileUri);
+
+                Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                    @Override
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if(!task.isSuccessful()){
+                            throw task.getException();
+                        }
+                        return filePath.getDownloadUrl();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if(task.isSuccessful()){
+
+                            Uri downloadUrl = task.getResult();
+                            myUrl = downloadUrl.toString();
+
+                            Map messageImageBody = new HashMap();
+                            messageImageBody.put("message", myUrl);
+                            messageImageBody.put("name", fileUri.getLastPathSegment());
+                            messageImageBody.put("type", checker);
+                            messageImageBody.put("from", messageSenderID);
+                            messageImageBody.put("to", messageReceiverID);
+                            messageImageBody.put("messageID", messagePushID);
+                            messageImageBody.put("time", saveCurrentTime);
+                            messageImageBody.put("date", saveCurrentDate);
+
+                            Map messageBodyDetails = new HashMap();
+                            messageBodyDetails.put(messageSenderRef + "/" + messagePushID, messageImageBody);
+                            messageBodyDetails.put(messageReceiverRef + "/" + messagePushID, messageImageBody);
+
+                            RootRef.updateChildren(messageBodyDetails);
+                            loadingBar.dismiss();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        loadingBar.dismiss();
+                        Toast.makeText(ChatActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+
 
             } else if(checker.equals("image")){
 

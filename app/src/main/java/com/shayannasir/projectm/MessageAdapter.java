@@ -1,5 +1,7 @@
 package com.shayannasir.projectm;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ThrowOnExtraProperties;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -50,7 +53,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     }
 
 
-
     @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -64,7 +66,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MessageViewHolder holder, final int position) {
 
         String messageSenderID = mAuth.getCurrentUser().getUid();
         Messages messages = userMessagesList.get(position);
@@ -112,6 +114,49 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
             }
 
+        } else if(fromMessageType.equals("image")){
+            if(fromUserID.equals(messageSenderID)){
+
+                holder.messageSenderImage.setVisibility(View.VISIBLE);
+
+                Picasso.get().load(messages.getMessage()).into(holder.messageSenderImage);
+            } else {
+
+                holder.messageReceiverImage.setVisibility(View.VISIBLE);
+
+                Picasso.get().load(messages.getMessage()).into(holder.messageReceiverImage);
+            }
+        } else {
+            if(fromUserID.equals(messageSenderID)){
+
+                holder.messageSenderImage.setVisibility(View.VISIBLE);
+
+                holder.messageSenderImage.setBackgroundResource(R.drawable.document);
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(userMessagesList.get(position).getMessage()));
+                        holder.itemView.getContext().startActivity(intent);
+                    }
+                });
+
+            } else {
+
+                holder.messageReceiverImage.setVisibility(View.VISIBLE);
+
+                holder.messageReceiverImage.setBackgroundResource(R.drawable.document);
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(userMessagesList.get(position).getMessage()));
+                        holder.itemView.getContext().startActivity(intent);
+                    }
+                });
+
+
+            }
         }
 
     }
