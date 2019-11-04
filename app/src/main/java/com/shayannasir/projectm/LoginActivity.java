@@ -75,6 +75,19 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if(currentUser != null){
+            SendUserToMainActivity();
+        }
+
+
+    }
+
     private void AllowUserToLogin() {
         String email = UserEmail.getText().toString();
         String password = UserPassword.getText().toString();
