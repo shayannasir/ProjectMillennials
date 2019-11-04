@@ -181,6 +181,15 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        messagesList.clear();
+        messageAdapter.notifyDataSetChanged();
+
+    }
+
 
     private void SendMessage(){
 
