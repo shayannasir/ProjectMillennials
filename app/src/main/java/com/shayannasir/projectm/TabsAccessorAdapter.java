@@ -16,12 +16,15 @@ public class TabsAccessorAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch(position){
             case 0:
+                GameFragment gameFragment = new GameFragment();
+                return gameFragment;
+            case 1:
                 ChatsFragment chatsFragment = new ChatsFragment();
                 return chatsFragment;
-            case 1:
+            case 2:
                 GroupsFragment groupsFragment = new GroupsFragment();
                 return groupsFragment;
-            case 2:
+            case 3:
                 ContactsFragment contactsFragment = new ContactsFragment();
                 return contactsFragment;
             default:
@@ -39,10 +42,12 @@ public class TabsAccessorAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch(position){
             case 0:
-                return "Chats";
+                return "Games";
             case 1:
-                return "Groups";
+                return "Chats";
             case 2:
+                return "Groups";
+            case 3:
                 return "Contacts";
             default:
                 return null;
