@@ -42,7 +42,7 @@ public class TabsAccessorAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch(position){
             case 0:
-                return "birb";
+                return "crappy birb";
             case 1:
                 return "Chats";
             case 2:
