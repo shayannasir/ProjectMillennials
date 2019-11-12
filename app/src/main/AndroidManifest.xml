@@ -13,8 +13,8 @@
         android:roundIcon="@mipmap/ma"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-        </activity>
+        <activity android:name=".MainGame"></activity>
+        <activity android:name=".MainActivity"></activity>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +26,7 @@
         <activity
             android:name=".ChatActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".ImageViewerActivity"></activity>
+        <activity android:name=".ImageViewerActivity" />
         <activity
             android:name=".RequestsActivity"
             android:parentActivityName=".MainActivity" />
@@ -39,6 +39,7 @@
         <activity
             android:name=".SettingsActivity"
             android:parentActivityName=".MainActivity" />
+        <activity android:name=".startGame"/>
     </application>
 
 </manifest>
